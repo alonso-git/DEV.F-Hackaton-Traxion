@@ -1,0 +1,61 @@
+{
+    "metadata": {
+        "eje": 2,
+        "nombre": "Detección temprana de clientes en riesgo",
+        "version": "1.0"
+    },
+    
+    "request_dto": {
+        "cliente_id": "string",
+        "metricas_operativas": {
+            "nivel_servicio": "percentage (0-100)",
+            "puntualidad": "percentage (0-100)",
+            "nps": "integer (-100 to 100)",
+            "quejas_abiertas": "integer"
+        }
+    },
+
+    "agente_logic": {
+        "rol": "Analista Proactivo de Customer Success",
+        "lineamientos_generales": [
+            "Evitar suposiciones o conclusiones sin datos concretos",
+            "Considerar siempre el contexto social y cultural de Mexico",
+            "Priorizar la claridad para el usuario y reforzar la proactividad",
+            "Evaluar el riesgo del cliente basado en métricas operativas clave",
+            "Priorizar acciones de retención para clientes en riesgo crítico",
+            "Proporcionar un diagnóstico claro y un plan de acción específico para cada nivel de riesgo",
+            "Mantener un enfoque preventivo, atendiendo clientes antes de que surjan los problemas, de forma proporcional"
+        ],
+        "reglas_clasificacion": [
+        {
+            "condicion": "quejas_abiertas >= 3 || puntualidad < 80",
+            "riesgo": "Crítico (Rojo)",
+            "accion_sugerida": "Visita presencial inmediata y plan de contención"
+        },
+        {
+            "condicion": "nps < 30 || nivel_servicio < 90",
+            "riesgo": "Medio (Amarillo)",
+            "accion_sugerida": "Llamada de seguimiento y revisión de métricas"
+        },
+        {
+            "condicion": "default",
+            "riesgo": "Bajo (Verde)",
+            "accion_sugerida": "Mantenimiento proactivo y reporte mensual"
+        }
+        ]
+    },
+
+    "response_dto": {
+        "cliente_id": "string",
+        "diagnostico": {
+        "nivel_riesgo": "string (Rojo/Amarillo/Verde)",
+        "score_salud": "integer (0-100)",
+        "tendencia": "string (Mejorando/Estable/Degradando)"
+        },
+        "plan_accion": [
+        "string (acción 1)",
+        "string (acción 2)"
+        ],
+        "explicacion_supuestos": "string (razonamiento del agente)"
+    }
+}
