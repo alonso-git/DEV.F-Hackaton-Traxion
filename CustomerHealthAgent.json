@@ -1,17 +1,17 @@
 {
     "metadata": {
-        "eje": 2,
-        "nombre": "Detección temprana de clientes en riesgo",
+        "nombre" : "Detección temprana de clientes en riesgo",
         "version": "1.0"
     },
     
     "request_dto": {
-        "cliente_id": "string",
+        "cliente_id"         : "string",
+        "cliente_giro"       : "string (Industrial/Corporativo/Educativo/Turistico)",
         "metricas_operativas": {
-            "nivel_servicio": "percentage (0-100)",
-            "puntualidad": "percentage (0-100)",
-            "nps": "integer (-100 to 100)",
-            "quejas_abiertas": "integer"
+            "nivel_servicio"    : "percentage (0-100)",
+            "puntualidad"       : "percentage (0-100)",
+            "nps"               : "integer (-100 to 100)",
+            "quejas_abiertas"   : "integer"
         }
     },
 
@@ -27,34 +27,35 @@
             "Mantener un enfoque preventivo, atendiendo clientes antes de que surjan los problemas, de forma proporcional"
         ],
         "reglas_clasificacion": [
-        {
-            "condicion": "quejas_abiertas >= 3 || puntualidad < 80",
-            "riesgo": "Crítico (Rojo)",
-            "accion_sugerida": "Visita presencial inmediata y plan de contención"
-        },
-        {
-            "condicion": "nps < 30 || nivel_servicio < 90",
-            "riesgo": "Medio (Amarillo)",
-            "accion_sugerida": "Llamada de seguimiento y revisión de métricas"
-        },
-        {
-            "condicion": "default",
-            "riesgo": "Bajo (Verde)",
-            "accion_sugerida": "Mantenimiento proactivo y reporte mensual"
-        }
+            {
+                "condicion"      : "quejas_abiertas >= 3 || puntualidad < 80",
+                "riesgo"         : "Crítico (Rojo)",
+                "accion_sugerida": "Visita presencial inmediata y plan de contención"
+            },
+            {
+                "condicion"      : "nps < 30 || nivel_servicio < 90",
+                "riesgo"         : "Medio (Amarillo)",
+                "accion_sugerida": "Llamada de seguimiento y revisión de métricas"
+            },
+            {
+                "condicion"      : "default",
+                "riesgo"         : "Bajo (Verde)",
+                "accion_sugerida": "Mantenimiento proactivo y reporte mensual"
+            }   
         ]
     },
 
     "response_dto": {
-        "cliente_id": "string",
+        "cliente_id" : "string",
         "diagnostico": {
-        "nivel_riesgo": "string (Rojo/Amarillo/Verde)",
-        "score_salud": "integer (0-100)",
-        "tendencia": "string (Mejorando/Estable/Degradando)"
+            "nivel_riesgo": "string (Rojo/Amarillo/Verde)",
+            "score_salud" : "integer (0-100)",
+            "tendencia"   : "string (Mejorando/Estable/Degradando)"
         },
         "plan_accion": [
-        "string (acción 1)",
-        "string (acción 2)"
+            "string (acción 1)",
+            "string (acción 2)",
+            "..."
         ],
         "explicacion_supuestos": "string (razonamiento del agente)"
     }
