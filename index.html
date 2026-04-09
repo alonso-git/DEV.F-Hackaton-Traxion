@@ -299,13 +299,13 @@
             const iaNote = document.getElementById('ia-note');
 
             // LÓGICA DEL EJE 2: Pesos oficiales
-            let wNS = 0.15, wPun = 0.25, wQuejas = 0.30, wNPS = 0.30;
+            let wNS = 0.34, wPun = 0.33, wNPS = 0.33;
 
             // MEJORA: Manejo de datos incompletos (Redistribución del 15% de Nivel de Servicio)
             if (ns === 0) {
                 iaNote.style.display = "block";
                 iaNote.innerHTML = "🤖 <strong>Agente IA:</strong> Nivel de servicio no detectado. Redistribuyendo peso del 15% proporcionalmente para mantener diagnóstico.";
-                wPun += 0.05; wQuejas += 0.05; wNPS += 0.05; wNS = 0;
+                wPun += 0.17; wNPS += 0.17; wNS = 0;
             } else {
                 iaNote.style.display = "none";
             }
@@ -313,7 +313,7 @@
             // Cálculo del Score (NPS normalizado de -100/100 a 0/100)
             const npsNorm = (nps + 100) / 2;
             let score = (ns * wNS) + (pun * wPun) + (npsNorm * wNPS);
-            score = score - (quejas * 4); // Penalización por quejas abiertas
+            score = score - (quejas * 5); // Penalización por quejas abiertas
             score = Math.max(0, Math.min(100, score));
 
             let riesgo, color, acciones;

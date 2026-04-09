@@ -26,20 +26,35 @@
         ],
         "reglas_clasificacion": [
             {
-                "condicion"      : "quejas_abiertas >= 3 || puntualidad < 80",
-                "riesgo"         : "Crítico (Rojo)",
-                "accion_sugerida": "Visita presencial inmediata y plan de contención"
+                "condicion": "quejas_abiertas >= 3 || puntualidad < 80",
+                "riesgo": "Crítico (Rojo)",
+                "diagnostico": "Prioridad máxima por compromiso directo de la operación o volumen de quejas crítico.",
+                "acciones_sugeridas": [
+                    "Mesa de Trabajo Presencial con responsables del giro",
+                    "Implementar plan de rescate de cuenta (contención < 24h)",
+                    "Monitoreo GPS intensivo en tiempo real"
+                ]
             },
             {
-                "condicion"      : "nps < 30 || nivel_servicio < 90",
-                "riesgo"         : "Medio (Amarillo)",
-                "accion_sugerida": "Llamada de seguimiento y revisión de métricas"
+                "condicion": "nps < 30 || score_salud < 75",
+                "riesgo": "Medio (Amarillo)",
+                "diagnostico": "Se detecta insatisfacción latente o degradación en el score de salud integral.",
+                "acciones_sugeridas": [
+                    "Llamada de seguimiento para validar insatisfacción NPS",
+                    "Optimización de itinerarios y horarios de salida",
+                    "Visita técnica de revisión de flota"
+                ]
             },
             {
-                "condicion"      : "default",
-                "riesgo"         : "Bajo (Verde)",
-                "accion_sugerida": "Mantenimiento proactivo y reporte mensual"
-            }   
+                "condicion": "default",
+                "riesgo": "Bajo (Verde)",
+                "diagnostico": "Operación estable con cumplimiento de KPIs por encima del umbral de seguridad.",
+                "acciones_sugeridas": [
+                    "Generación de reporte mensual de estabilidad",
+                    "Asegurar mantenimiento preventivo de unidades",
+                    "Documentar desempeño como caso de éxito para fidelización"
+                ]
+            }
         ]
     },
     "response_dto": {
