@@ -1,7 +1,7 @@
 {
     "metadata": {
         "nombre" : "Detección temprana de clientes en riesgo",
-        "version": "1.0"
+        "version": "1.4"
     },
     "request_dto": {
         "cliente_id"         : "string",
