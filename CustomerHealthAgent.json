@@ -1,89 +1,86 @@
 {
-    "metadata": {
-        "nombre": "Detección temprana de clientes en riesgo (Customer Health)",
-        "version": "FINAL_PROD_1.0",
-        "autor": "Halcon Team"
-    },
-    "agente_config": {
-        "rol": "Analista Proactivo de Customer Success (Agente IA)",
-        "descripcion": "Agente especializado en integrar métricas operativas aisladas para predecir el churn y sugerir planes de retención proactivos.",
-        "system_instructions": [
-            "Actuar siempre bajo el principio de 'Cultura Preventiva'.",
-            "Priorizar la seguridad de la cuenta cuando existan señales de alerta en puntualidad o quejas.",
-            "En caso de datos faltantes, aplicar razonamiento de redistribución de pesos para no detener el diagnóstico.",
-            "Utilizar un tono profesional, directo y orientado a la acción inmediata."
-        ]
-    },
-    "request_dto": {
-        "cliente_id": "string",
-        "giro_estrategico": "string (Industrial | Corporativo | Educativo | Turístico) ",
-        "metricas_operativas": {
-            "nivel_servicio": "percentage (0-100) ",
-            "puntualidad": "percentage (0-100) ",
-            "nps": "integer (-100 to 100)",
-            "quejas_abiertas": "integer"
-        }
-    },
-    "agente_logic": {
-        "pesos_base_score": {
-            "nivel_servicio": 0.15,
-            "puntualidad": 0.25,
-            "nps": 0.30,
-            "quejas_penalizacion": 0.30
-        },
-        "reglas_clasificacion_riesgo": [
-            {
-                "nivel": "Crítico (Rojo)",
-                "condicion": "quejas_abiertas >= 3 OR puntualidad < 80%",
-                "significado": "Riesgo inminente de cancelación o licitación perdida.",
-                "accion_prioritaria": "Intervención presencial y mesa de trabajo."
-            },
-            {
-                "nivel": "Medio (Amarillo)",
-                "condicion": "nps < 30 OR score_salud < 75%",
-                "significado": "Señales tempranas de degradación en la experiencia del cliente.",
-                "accion_prioritaria": "Ajuste operativo y llamada de seguimiento."
-            },
-            {
-                "nivel": "Bajo (Verde)",
-                "condicion": "Default (Score > 75%)",
-                "significado": "Operación estable con oportunidad de fidelización.",
-                "accion_prioritaria": "Reporte mensual de valor y mantenimiento preventivo."
-            }
-        ],
-        "manejo_excepciones": {
-            "datos_faltantes": "Si nivel_servicio == 0, se activa protocolo de redistribución proporcional de su peso (15%) hacia las métricas de NPS y Puntualidad para mantener la visibilidad del riesgo."
-        }
-    },
-    "templates_generacion_respuesta": {
-        "razonamiento_estructura": "Diagnóstico de Salud para sector [GIRO]: El score resultante de [SCORE]% indica un estado [NIVEL]. [SUPUESTO_DATA_FALTANTE].",
-        "plan_accion_dinamico": {
-            "Industrial": "Enfocar en asegurar líneas de producción mediante puntualidad extrema.",
-            "Corporativo": "Priorizar la experiencia de usuario y el NPS del colaborador.",
-            "Educativo": "Monitoreo estricto de rutas de llegada en horarios pico.",
-            "Turístico": "Enfoque en calidad de unidad y satisfacción del pasajero."
-        }
-    },
-    "safety_constraints": [
-        "No sugerir reducciones de flota si el cliente está en riesgo Crítico.",
-        "No omitir quejas abiertas en el resumen de diagnóstico.",
-        "Evitar términos técnicos ambiguos; usar lenguaje de negocio de Traxión."
-    ],
-    "response_dto": {
-        "cliente_id": "string",
-        "diagnostico": {
-            "score_salud": "number",
-            "nivel_riesgo": "string",
-            "explicacion_razonamiento": "string"
-        },
-        "plan_accion": [
-            "Acción Estratégica 1",
-            "Acción Estratégica 2",
-            "Acción Estratégica 3"
-        ],
-        "metadatos_ia": {
-            "pesos_aplicados": "object",
-            "redistribucion_activada": "boolean"
-        }
+  "metadata": {
+  
+    "nombre": "Detección temprana de clientes en riesgo (Customer Health)",
+    "version": "FINAL_TOTAL"
+  },
+  "agente_config": {
+    "rol": "Analista Proactivo de Customer Success",
+    "objetivo": "Identificar señales operativas críticas y niveles de satisfacción para asegurar la retención mediante un score de salud integral adaptado al giro del cliente."
+  },
+  "request_dto": {
+    "cliente_id": "string",
+    "giro_estrategico": "Industrial | Corporativo | Educativo | Turístico",
+    "metricas": {
+      "nivel_servicio": "percentage (0-100)",
+      "puntualidad": "percentage (0-100)",
+      "nps": "integer (-100 a 100)",
+      "quejas_abiertas": "integer"
     }
+  },
+  "agente_logic": {
+    "sistema_de_pesos_equitativo": {
+      "nivel_servicio": 0.34,
+      "puntualidad": 0.33,
+      "nps_normalizado": 0.33,
+      "total_base": 1.0
+    },
+    "penalizacion_por_incidencias": {
+      "impacto": "Cada queja abierta resta 4 puntos directos al score final",
+      "proposito": "Degradación proactiva de la salud ante fallas de servicio acumuladas"
+    },
+    "protocolo_resiliencia_datos": {
+      "condicion": "nivel_servicio === 0",
+      "accion": "Redistribución del 34% (17% extra a Puntualidad y 17% extra a NPS) para garantizar continuidad en el diagnóstico."
+    },
+    "jerarquia_de_decision": [
+      {
+        "nivel": "Crítico (Rojo)",
+        "prioridad": 1,
+        "condicion": "quejas_abiertas >= 3 OR puntualidad < 80%",
+        "razonamiento": "Prioridad ante riesgos operativos inminentes o saturación de quejas."
+      },
+      {
+        "nivel": "Medio (Amarillo)",
+        "prioridad": 2,
+        "condicion": "nps < 30 OR score_salud < 75%",
+        "razonamiento": "Alerta temprana por insatisfacción percibida o score degradado."
+      },
+      {
+        "nivel": "Bajo (Verde)",
+        "prioridad": 3,
+        "condicion": "Default",
+        "razonamiento": "Mantenimiento de estándares de excelencia operativa."
+      }
+    ]
+  },
+  "templates_dinamicos": {
+    "acciones_por_nivel": {
+      "Crítico (Rojo)": [
+        "Mesa de Trabajo Presencial en sector {giro_estrategico}.",
+        "Plan de Contención de 24 horas.",
+        "Monitoreo GPS intensivo."
+      ],
+      "Medio (Amarillo)": [
+        "Llamada de validación de NPS.",
+        "Optimización de rutas para el giro {giro_estrategico}.",
+        "Visita técnica de supervisión de unidades."
+      ],
+      "Bajo (Verde)": [
+        "Reporte de éxito operativo en el sector {giro_estrategico}.",
+        "Mantenimiento preventivo de flota.",
+        "Propuesta de expansión por fidelización."
+      ]
+    }
+  },
+  "response_dto": {
+    "diagnostico": {
+      "cliente_id": "string",
+      "giro_analizado": "string",
+      "score_salud": "number (0-100)",
+      "nivel_riesgo": "string"
+    },
+    "acciones_sugeridas": "array",
+    "nota_proactiva_ia": "string (Mensaje generado en caso de datos faltantes o avisos de redistribución)"
+  }
 }
