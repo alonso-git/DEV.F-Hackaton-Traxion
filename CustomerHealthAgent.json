@@ -1,59 +1,89 @@
 {
     "metadata": {
-        "nombre" : "Detección temprana de clientes en riesgo",
-        "version": "1.0"
+        "nombre": "Detección temprana de clientes en riesgo (Customer Health)",
+        "version": "FINAL_PROD_1.0",
+        "autor": "Halcon Team"
+    },
+    "agente_config": {
+        "rol": "Analista Proactivo de Customer Success (Agente IA)",
+        "descripcion": "Agente especializado en integrar métricas operativas aisladas para predecir el churn y sugerir planes de retención proactivos.",
+        "system_instructions": [
+            "Actuar siempre bajo el principio de 'Cultura Preventiva'.",
+            "Priorizar la seguridad de la cuenta cuando existan señales de alerta en puntualidad o quejas.",
+            "En caso de datos faltantes, aplicar razonamiento de redistribución de pesos para no detener el diagnóstico.",
+            "Utilizar un tono profesional, directo y orientado a la acción inmediata."
+        ]
     },
     "request_dto": {
-        "cliente_id"         : "string",
-        "cliente_giro"       : "string (Industrial/Corporativo/Educativo/Turistico)",
+        "cliente_id": "string",
+        "giro_estrategico": "string (Industrial | Corporativo | Educativo | Turístico) ",
         "metricas_operativas": {
-            "nivel_servicio"    : "percentage (0-100)",
-            "puntualidad"       : "percentage (0-100)",
-            "nps"               : "integer (-100 to 100)",
-            "quejas_abiertas"   : "integer"
+            "nivel_servicio": "percentage (0-100) ",
+            "puntualidad": "percentage (0-100) ",
+            "nps": "integer (-100 to 100)",
+            "quejas_abiertas": "integer"
         }
     },
     "agente_logic": {
-        "rol": "Analista Proactivo de Customer Success",
-        "lineamientos_generales": [
-            "Evitar suposiciones o conclusiones sin datos concretos",
-            "Considerar siempre el contexto social y cultural de Mexico",
-            "Priorizar la claridad para el usuario y reforzar la proactividad",
-            "Evaluar el riesgo del cliente basado en métricas operativas clave",
-            "Priorizar acciones de retención para clientes en riesgo crítico",
-            "Proporcionar un diagnóstico claro y un plan de acción específico para cada nivel de riesgo",
-            "Mantener un enfoque preventivo, atendiendo clientes antes de que surjan los problemas, de forma proporcional"
+        "pesos_base_score": {
+            "nivel_servicio": 0.15,
+            "puntualidad": 0.25,
+            "nps": 0.30,
+            "quejas_penalizacion": 0.30
+        },
+        "reglas_clasificacion_riesgo": [
+            {
+                "nivel": "Crítico (Rojo)",
+                "condicion": "quejas_abiertas >= 3 OR puntualidad < 80%",
+                "significado": "Riesgo inminente de cancelación o licitación perdida.",
+                "accion_prioritaria": "Intervención presencial y mesa de trabajo."
+            },
+            {
+                "nivel": "Medio (Amarillo)",
+                "condicion": "nps < 30 OR score_salud < 75%",
+                "significado": "Señales tempranas de degradación en la experiencia del cliente.",
+                "accion_prioritaria": "Ajuste operativo y llamada de seguimiento."
+            },
+            {
+                "nivel": "Bajo (Verde)",
+                "condicion": "Default (Score > 75%)",
+                "significado": "Operación estable con oportunidad de fidelización.",
+                "accion_prioritaria": "Reporte mensual de valor y mantenimiento preventivo."
+            }
         ],
-        "reglas_clasificacion": [
-            {
-                "condicion"      : "quejas_abiertas >= 3 || puntualidad < 80",
-                "riesgo"         : "Crítico (Rojo)",
-                "accion_sugerida": "Visita presencial inmediata y plan de contención"
-            },
-            {
-                "condicion"      : "nps < 30 || nivel_servicio < 90",
-                "riesgo"         : "Medio (Amarillo)",
-                "accion_sugerida": "Llamada de seguimiento y revisión de métricas"
-            },
-            {
-                "condicion"      : "default",
-                "riesgo"         : "Bajo (Verde)",
-                "accion_sugerida": "Mantenimiento proactivo y reporte mensual"
-            }   
-        ]
+        "manejo_excepciones": {
+            "datos_faltantes": "Si nivel_servicio == 0, se activa protocolo de redistribución proporcional de su peso (15%) hacia las métricas de NPS y Puntualidad para mantener la visibilidad del riesgo."
+        }
     },
+    "templates_generacion_respuesta": {
+        "razonamiento_estructura": "Diagnóstico de Salud para sector [GIRO]: El score resultante de [SCORE]% indica un estado [NIVEL]. [SUPUESTO_DATA_FALTANTE].",
+        "plan_accion_dinamico": {
+            "Industrial": "Enfocar en asegurar líneas de producción mediante puntualidad extrema.",
+            "Corporativo": "Priorizar la experiencia de usuario y el NPS del colaborador.",
+            "Educativo": "Monitoreo estricto de rutas de llegada en horarios pico.",
+            "Turístico": "Enfoque en calidad de unidad y satisfacción del pasajero."
+        }
+    },
+    "safety_constraints": [
+        "No sugerir reducciones de flota si el cliente está en riesgo Crítico.",
+        "No omitir quejas abiertas en el resumen de diagnóstico.",
+        "Evitar términos técnicos ambiguos; usar lenguaje de negocio de Traxión."
+    ],
     "response_dto": {
-        "cliente_id" : "string",
+        "cliente_id": "string",
         "diagnostico": {
-            "nivel_riesgo": "string (Rojo/Amarillo/Verde)",
-            "score_salud" : "integer (0-100)",
-            "tendencia"   : "string (Mejorando/Estable/Degradando)"
+            "score_salud": "number",
+            "nivel_riesgo": "string",
+            "explicacion_razonamiento": "string"
         },
         "plan_accion": [
-            "string (acción 1)",
-            "string (acción 2)",
-            "..."
+            "Acción Estratégica 1",
+            "Acción Estratégica 2",
+            "Acción Estratégica 3"
         ],
-        "explicacion_supuestos": "string (razonamiento del agente)"
+        "metadatos_ia": {
+            "pesos_aplicados": "object",
+            "redistribucion_activada": "boolean"
+        }
     }
 }
