@@ -26,7 +26,7 @@
         ],
         "reglas_clasificacion": [
             {
-                "condicion": "quejas_abiertas >= 3 || puntualidad < 80",
+                "condicion": "quejas_abiertas >= 3 || puntualidad < 80 || score_salud < 60",
                 "riesgo": "Crítico (Rojo)",
                 "diagnostico": "Prioridad máxima por compromiso directo de la operación o volumen de quejas crítico.",
                 "acciones_sugeridas": [
