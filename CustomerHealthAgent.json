@@ -56,7 +56,7 @@
             "string (acción 1)",
             "string (acción 2)",
             "..."
-        ],
+        ],  
         "explicacion_supuestos": "string (razonamiento del agente)"
     }
 }
