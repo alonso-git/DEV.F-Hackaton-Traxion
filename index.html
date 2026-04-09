@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traxión | Customer Health Agent</title>
+    <style>
+        :root {
+            --traxion-green: #cde132;
+            --traxion-dark: #1a1a1a;
+            --traxion-grey: #f0f2f5;
+            --white: #ffffff;
+            --rojo: #ff4d4d;
+            --amarillo: #ffa502;
+            --verde: #2ecc71;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: var(--traxion-grey);
+            margin: 0;
+            color: var(--traxion-dark);
+        }
+
+        .header-brand {
+            background-color: var(--traxion-dark);
+            color: var(--white);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--traxion-green);
+        }
+
+        .main-wrapper {
+            max-width: 1200px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        input[type="text"],
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .slider-item {
+            background: #fcfcfc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .val-display {
+            background: var(--traxion-dark);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--traxion-dark);
+        }
+
+        .btn-ai {
+            background-color: var(--traxion-green);
+            color: var(--traxion-dark);
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 0px #a8ba1d;
+            transition: all 0.2s ease;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(205, 225, 50, 0.4);
+        }
+
+        #response-container {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 12px;
+            background: #fff;
+            border-left: 8px solid var(--traxion-dark);
+        }
+
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .plan-accion-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .plan-accion-box ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .plan-accion-box li {
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        /* Mejora visual: Nota proactiva de la IA */
+        .ia-insight {
+            background: #e8f5e9;
+            border-left: 4px solid var(--verde);
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #eee;
+            font-size: 0.8rem;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header-brand">
+        <h1>TRAXIÓN | CUSTOMER HEALTH AGENT</h1>
+        <div style="font-size: 0.8rem; letter-spacing: 1px;">EJE 2: DETECCIÓN TEMPRANA</div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="left-column">
+            <div class="card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="input-group">
+                        <label>Cliente ID</label>
+                        <input type="text" id="cliente_id" placeholder="Ej: TX-2026">
+                    </div>
+                    <div class="input-group">
+                        <label>Giro Estratégico</label>
+                        <select id="giro">
+                            <option value="Industrial">Industrial</option>
+                            <option value="Corporativo">Corporativo</option>
+                            <option value="Educativo">Educativo</option>
+                            <option value="Turístico">Turístico</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="slider-item">
+                    <div class="slider-header"><label>Nivel de Servicio (%)</label><span class="val-display"
+                            id="disp_ns">90</span></div>
+                    <input type="range" id="nivel_servicio" min="0" max="100" value="90"
+                        oninput="disp_ns.innerText=this.value">
+                </div>
+
+                <div class="slider-item">
+                    <div class="slider-header"><label>Puntualidad (%)</label><span class="val-display"
+                            id="disp_pun">85</span></div>
+                    <input type="range" id="puntualidad" min="0" max="100" value="85"
+                        oninput="disp_pun.innerText=this.value">
+                </div>
+
+                <div class="slider-item">
+                    <div class="slider-header"><label>Net Promoter Score (NPS)</label><span class="val-display"
+                            id="disp_nps">20</span></div>
+                    <input type="range" id="nps" min="-100" max="100" value="20"
+                        oninput="disp_nps.innerText=this.value">
+                </div>
+
+                <div class="input-group">
+                    <label>Quejas Abiertas (Entero)</label>
+                    <input type="number" id="quejas_abiertas" value="0" min="0">
+                </div>
+
+                <button class="btn-ai" onclick="ejecutarAgente()">Analizar Salud del Cliente</button>
+
+                <div id="response-container">
+                    <div id="ia-note" class="ia-insight"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 id="res-cliente" style="margin:0; font-size: 1.4rem;">--</h3>
+                            <p style="margin: 10px 0;"><strong>Score de Salud:</strong> <span id="res-score">0</span>%
+                            </p>
+                        </div>
+                        <div id="res-badge" class="status-badge">RIESGO</div>
+                    </div>
+
+                    <div class="plan-accion-box">
+                        <label
+                            style="border-bottom: 2px solid var(--traxion-green); display: inline-block; margin-bottom: 15px;">Plan
+                            de Acción Estratégico</label>
+                        <ul id="res-acciones"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Log de Monitoreo Preventivo</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Cliente</th>
+                            <th>Giro</th>
+                            <th>Riesgo</th>
+                            <th>Salud</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="summary-widget"
+                style="background:var(--traxion-dark); color:white; padding:20px; border-radius:12px;">
+                <h3 style="color:var(--traxion-green); margin-top:0;">Resumen Operativo</h3>
+                <p>Total Analizados: <span id="stat-total" style="font-weight:bold;">0</span></p>
+                <p>Riesgos Críticos: <span id="stat-red" style="font-weight:bold; color:var(--rojo);">0</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let total = 0; let rojos = 0;
+
+        function ejecutarAgente() {
+            const cid = document.getElementById('cliente_id').value || "TX-GENERICO";
+            const giro = document.getElementById('giro').value;
+            const ns = parseInt(document.getElementById('nivel_servicio').value);
+            const pun = parseInt(document.getElementById('puntualidad').value);
+            const nps = parseInt(document.getElementById('nps').value);
+            const quejas = parseInt(document.getElementById('quejas_abiertas').value);
+            const iaNote = document.getElementById('ia-note');
+
+            // LÓGICA DEL EJE 2: Pesos oficiales
+            let wNS = 0.15, wPun = 0.25, wQuejas = 0.30, wNPS = 0.30;
+
+            // MEJORA: Manejo de datos incompletos (Redistribución del 15% de Nivel de Servicio)
+            if (ns === 0) {
+                iaNote.style.display = "block";
+                iaNote.innerHTML = "🤖 <strong>Agente IA:</strong> Nivel de servicio no detectado. Redistribuyendo peso del 15% proporcionalmente para mantener diagnóstico.";
+                wPun += 0.05; wQuejas += 0.05; wNPS += 0.05; wNS = 0;
+            } else {
+                iaNote.style.display = "none";
+            }
+
+            // Cálculo del Score (NPS normalizado de -100/100 a 0/100)
+            const npsNorm = (nps + 100) / 2;
+            let score = (ns * wNS) + (pun * wPun) + (npsNorm * wNPS);
+            score = score - (quejas * 4); // Penalización por quejas abiertas
+            score = Math.max(0, Math.min(100, score));
+
+            let riesgo, color, acciones;
+
+            // REGLAS DEL AGENTE (Basadas en el JSON y la guía)
+            if (quejas >= 3 || pun < 80) {
+                riesgo = "Crítico (Rojo)"; color = "var(--rojo)";
+                acciones = [
+                    "**Mesa de Trabajo Presencial:** Intervención inmediata con responsables del giro **" + giro + "**.",
+                    "**Plan de Contención:** Implementar rescate de cuenta en menos de 24 horas.",
+                    "**Monitoreo Intensivo:** Seguimiento GPS en tiempo real para eliminar retrasos."
+                ];
+                rojos++;
+            } else if (nps < 30 || score < 75) {
+                riesgo = "Medio (Amarillo)"; color = "var(--amarillo)";
+                acciones = [
+                    "**Llamada de Seguimiento:** Validar insatisfacción detectada (NPS: " + nps + ").",
+                    "**Optimización de Itinerarios:** Ajustar horarios de salida para mejorar puntualidad.",
+                    "**Visita Técnica:** Revisar estado de flota para clientes de tipo **" + giro + "**."
+                ];
+            } else {
+                riesgo = "Bajo (Verde)"; color = "var(--verde)";
+                acciones = [
+                    "**Reporte Mensual:** Destacar estabilidad operativa y cumplimiento de KPIs.",
+                    "**Mantenimiento Preventivo:** Asegurar disponibilidad total de la flota.",
+                    "**Fidelización:** Documentar desempeño actual como caso de éxito."
+                ];
+            }
+
+            // Actualización de UI
+            document.getElementById('response-container').style.display = 'block';
+            document.getElementById('res-cliente').innerText = `Diagnóstico: ${cid}`;
+            document.getElementById('res-score').innerText = score.toFixed(1);
+            document.getElementById('res-badge').innerText = riesgo;
+            document.getElementById('res-badge').style.backgroundColor = color;
+
+            const list = document.getElementById('res-acciones');
+            list.innerHTML = acciones.map(a => `<li>${a.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('');
+
+            total++;
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-red').innerText = rojos;
+            const log = document.getElementById('log-body');
+            log.innerHTML = `<tr><td><strong>${cid}</strong></td><td>${giro}</td><td><span style="color:${color}; font-weight:bold;">${riesgo}</span></td><td>${score.toFixed(1)}%</td></tr>` + log.innerHTML;
+        }
+    </script>
+</body>
+
+</html>
