@@ -3,7 +3,6 @@
         "nombre" : "Detección temprana de clientes en riesgo",
         "version": "1.0"
     },
-    
     "request_dto": {
         "cliente_id"         : "string",
         "cliente_giro"       : "string (Industrial/Corporativo/Educativo/Turistico)",
@@ -14,7 +13,6 @@
             "quejas_abiertas"   : "integer"
         }
     },
-
     "agente_logic": {
         "rol": "Analista Proactivo de Customer Success",
         "lineamientos_generales": [
@@ -44,7 +42,6 @@
             }   
         ]
     },
-
     "response_dto": {
         "cliente_id" : "string",
         "diagnostico": {
